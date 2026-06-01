@@ -1,13 +1,26 @@
-const ContactCard = (props) => {
+import useGlobalReducer from "../context/StoreContext";
+
+const ContactCard = ({contact}) => {
+    
+    const {dispatch} = useGlobalReducer();
+    
     return (
         <div>
-            <h3>{props.name}</h3>
-            <p>{props.email}</p>
-            <p>{props.phone}</p>
-            <p>{props.address}</p>
+            <h3>{contact.name}</h3>
+            <p>{contact.email}</p>
+            <p>{contact.phone}</p>
+            <p>{contact.address}</p>
 
             <button>Edit</button>
-            <button>Delete</button>
+            <button
+                onClick={() =>
+                    dispatch({
+                        type: 'DELETE_CONTACT',
+                        payload: contact.id
+                    })
+                }
+            >
+                Delete</button>
         </div>
     );
 };

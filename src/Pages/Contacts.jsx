@@ -13,10 +13,7 @@ const Contacts = () => {
                 store.contacts.map((contact) => (
                     <ContactCard
                         key={contact.id}
-                        name={contact.name}
-                        email={contact.email}
-                        phone={contact.phone}
-                        address={contact.address}
+                        contact={contact}
                     />
                 ))
             }
