@@ -1,10 +1,10 @@
-const ContactCard = () => {
+const ContactCard = (props) => {
     return (
         <div>
-            <h3>Erik Malo</h3>
-            <p>emms@algo.com</p>
-            <p>55312467</p>
-            <p>CDMX</p>
+            <h3>{props.name}</h3>
+            <p>{props.email}</p>
+            <p>{props.phone}</p>
+            <p>{props.address}</p>
 
             <button>Edit</button>
             <button>Delete</button>
