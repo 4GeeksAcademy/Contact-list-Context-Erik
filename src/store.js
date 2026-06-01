@@ -1,34 +1,5 @@
 export const initialStore = () => ({
-    contacts: [
-         {
-            id: 1,
-            name: 'Erik',
-            email: "erik@algo.com",
-            phone: '557383921',
-            address:'CDMX'
-        },
-        {
-            id: 2,
-            name:'Otto',
-            email:'o_schuessler@algo.com',
-            phone:'3065438812',
-            address:'Regina, SK'
-        },
-        {
-            id: 3,
-            name: 'Takuma',
-            email: 'tacotimer@algo.com',
-            phone:'2389309',
-            address:'Oita, JP'
-        },
-        {
-            id: 4,
-            name: 'Adelqui',
-            email: 'adxion@algo.com',
-            phone: '57849302',
-            address: 'Lima, PE'
-        }
-    ]
+    contacts: []
 });
 
 export default function storeReducer(store, action) {
@@ -47,6 +18,12 @@ export default function storeReducer(store, action) {
                     contact => contact.id !== action.payload
                 )
             };
+
+        case 'SET_CONTACTS':
+            return{
+                ...store,
+                contacts: action.payload
+            }; 
 
         default:
             return store; 
