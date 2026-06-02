@@ -30,6 +30,26 @@ const AddContact = () => {
     address: address.trim()
   };
 
+   if (contactId) {
+      const response = await fetch(
+         `https://playground.4geeks.com/contact/agendas/${agendaSlug}/contacts/${contactId}`,
+         {
+            method: 'PUT',
+            headers:{
+               "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newContact)
+         }
+      );
+
+     if (!response.ok) {
+      console.log("Error updating contact:", response.status)
+      return;
+     }    
+     navigate("/");
+     return;
+   }
+
   const response = await fetch(
     `https://playground.4geeks.com/contact/agendas/${agendaSlug}/contacts`,
     {
