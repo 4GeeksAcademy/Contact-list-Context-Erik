@@ -1,6 +1,6 @@
 import useGlobalReducer from "../context/StoreContext";
-
-const ContactCard = ({contact}) => {
+import { Link } from "react-router-dom";
+const ContactCard = ({contact, deleteContact}) => {
     
     const {dispatch} = useGlobalReducer();
     
@@ -11,13 +11,13 @@ const ContactCard = ({contact}) => {
             <p>{contact.phone}</p>
             <p>{contact.address}</p>
 
-            <button>Edit</button>
+            <Link to={`/edit-contact/${contact.id}`}>
+                Edit 
+            </Link>
+            
             <button
                 onClick={() =>
-                    dispatch({
-                        type: 'DELETE_CONTACT',
-                        payload: contact.id
-                    })
+                    deleteContact(contact.id)
                 }
             >
                 Delete</button>

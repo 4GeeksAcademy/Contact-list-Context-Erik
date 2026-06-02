@@ -9,6 +9,7 @@ function App () {
             <Routes>
                 <Route path= "/" element={<Contacts/>} />
                 <Route path= "/add-contact" element={<AddContact/>} />
+                <Route path="/edit-contact/:contactId" element={<AddContact/>} />
             </Routes>
         </BrowserRouter>
     )
