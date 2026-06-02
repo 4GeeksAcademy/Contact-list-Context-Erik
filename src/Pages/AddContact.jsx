@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useGlobalReducer from "../context/StoreContext";
 import { useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const AddContact = () => {
 
@@ -116,21 +117,49 @@ const AddContact = () => {
 
     
 
-   return(
-      <div>
-         <h1>Add Contact</h1>
+   return (
+    <div className="form-page">
 
-         <input value={name} onChange={(e) => setName(e.target.value)}  placeholder="Name"/>
+        <div className="form-container">
 
-         <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone"/>
+            <h1>
+                {contactId ? "Edit Contact" : "Add Contact"}
+            </h1>
 
-         <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"/>
+            <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Full Name"
+            />
 
-         <input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Address" />
+            <input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Phone"
+            />
 
-         <button onClick={addContact}>Add Contact</button>
-      </div>
-   )
+            <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+            />
+
+            <input
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Address"
+            />
+
+            <button onClick={addContact}>
+                Save Contact
+            </button>
+
+            <Link to={"/"}>or get back to contacts</Link>
+
+        </div>
+
+    </div>
+);
 }   
 
 export default AddContact;
