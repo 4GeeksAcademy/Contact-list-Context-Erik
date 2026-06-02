@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useGlobalReducer from "../context/StoreContext";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -8,55 +8,93 @@ const AddContact = () => {
    const [phone, setPhone] = useState('');
    const [email, setEmail] = useState('');
    const [address, setAddress] = useState('');
-   const {dispatch} = useGlobalReducer();
+   const {store, dispatch} = useGlobalReducer();
    const navigate = useNavigate();
    const agendaSlug = 'erik_contacts';
    const {contactId} = useParams();
    
-   console.log("contactId:", contactId)
+   
 
-   const addContact = async () => {
+ const addContact = async () => {
+  if (
+    name.trim() === "" ||
+    phone.trim() === "" ||
+    email.trim() === "" ||
+    address.trim() === ""
+  ) return;
 
-      if (
-            name.trim() === '' ||
-            phone.trim() === '' ||
-            email.trim() === '' ||
-            address.trim() === ''
-      ) return;
+  const newContact = {
+    name: name.trim(),
+    email: email.trim(),
+    phone: phone.trim(),
+    address: address.trim()
+  };
+
+  const response = await fetch(
+    `https://playground.4geeks.com/contact/agendas/${agendaSlug}/contacts`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newContact)
+    }
+  );
+
+  if (!response.ok) {
+    console.log("Error creating contact:", response.status);
+    return;
+  }
+
+  navigate("/");
+};
 
 
-      const newContact = {
-         name: name.trim(),
-         email: email.trim(),
-         phone: phone.trim(),
-         address: address.trim()
-      };
-
+   const getContacts = async () => {
       const response = await fetch(
-         `https://playground.4geeks.com/contact/agendas/${agendaSlug}/contacts`,
-         {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newContact)
-         }
+         `https://playground.4geeks.com/contact/agendas/${agendaSlug}/contacts`
       );
 
-      if (!response.ok) {
-         console.log("Error creating contact");
-         return;
-      }
-
-      navigate('/')
+      const data = await response.json();
 
       dispatch({
-         type: 'ADD_CONTACT',
-         payload: newContact
+         type: "SET_CONTACTS",
+         payload: data.contacts
       });
-   
-      setName("")
+
+      return data.contacts;
    }
+
+  useEffect(() => {
+  const loadContactForEdit = async () => {
+    if (!contactId) return;
+
+    let contacts = store.contacts;
+
+    if (contacts.length === 0) {
+      contacts = await getContacts();
+    }
+
+    const contactToEdit = contacts.find(
+      (contact) => String(contact.id) === String(contactId)
+    );
+
+    console.log("contactToEdit:", contactToEdit);
+
+    if (!contactToEdit) return;
+
+    setName(contactToEdit.name || "");
+    setPhone(contactToEdit.phone || "");
+    setEmail(contactToEdit.email || "");
+    setAddress(contactToEdit.address || "");
+  };
+
+  loadContactForEdit();
+}, [contactId]);
+
+
+
+    
 
    return(
       <div>
@@ -76,3 +114,5 @@ const AddContact = () => {
 }   
 
 export default AddContact;
+
+
